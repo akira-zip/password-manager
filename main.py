@@ -13,14 +13,10 @@ config = {
 def connect():
   return mysql.connector.connect(**config)
 
-def loadPasswords():
+def addPassword(tipo: str, email: str, telefone: str, user: str, password: str):
   con = connect()
   cur = con.cursor()
-  cur.execute("SELECT * FROM senhas")
-  resultados = cur.fetchall()
-
-  for [id, tipo, email, telefone, user, password] in resultados:
-    print(f"[Id] {id} | [Tipo] {tipo} | [Email] {email} | [Telefone] {telefone} | [Usuario] {user} | [Senha] {password}")
-
+  cur.execute("INSERT INTO senhas (tipo, email, telefone, user, password) VALUES (%s, %s, %s, %s, %s)", (tipo, email, telefone, user, password))
+  con.commit()
   cur.close()
   con.close()
