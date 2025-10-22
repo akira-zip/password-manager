@@ -1,5 +1,5 @@
 import tkinter as tk
-from backend import functions as f
+import functions as f
 
 """--- Variáveis globais ---"""
 
