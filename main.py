@@ -1,10 +1,6 @@
 import tkinter as tk
 import functions as f
-
-"""--- Variáveis globais ---"""
-
-cbValues = {}
-cbIds = []
+import variables as v
 
 """--- Funções principais ---"""
 
@@ -28,14 +24,14 @@ def showMenu():
 
 def changeState(id, var):
   if var.get() == True:
-    cbIds.append(id)
+    v.cbIds.append(id)
     print(f"Checkbox {id} marcado")
   else:
-    cbIds.remove(id)
+    v.cbIds.remove(id)
     print(f"Checkbox {id} desmarcado")
 
 def iterateIds():
-  for id in cbIds:
+  for id in v.cbIds:
     f.removePassword(id)
   
   showMenu()
@@ -99,7 +95,7 @@ def showRemove():
   for row in f.loadPasswords():
     idRegistro = row[0]
     varState = tk.BooleanVar()
-    cbValues[idRegistro] = varState
+    v.cbValues[idRegistro] = varState
     
     tk.Checkbutton(fList, variable=varState, command=lambda id=idRegistro, var=varState: changeState(id, var)).grid(row=rowNum, column=0, sticky="w", padx=16, pady=4)
     
