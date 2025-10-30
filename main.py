@@ -42,7 +42,7 @@ def showAdd():
   clearAll()
 
   aux = tk.Frame(main)
-  aux.pack(fill="both", expand=True)
+  aux.pack()
 
   title = tk.Label(aux, text="Adicionar senha", font=("consolas", 16, "bold"))
   title.grid(row=0, column=0, sticky="ew", pady=16)
