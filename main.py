@@ -13,16 +13,16 @@ def showMenu():
   clearAll()
 
   aux = tk.Frame(main)
-  aux.pack()
+  aux.pack(fill="both", expand=True)
   
   style = {"width": 16, "height": 2}
   tk.Button(aux, **style, text="Adicionar", font=("consolas", 12, "normal"), command=lambda:showAdd()).pack(pady=16)
   tk.Button(aux, **style, text="Remover", font=("consolas", 12, "normal"), command=lambda:print("0")).pack(pady=16)
   tk.Button(aux, **style, text="Apagar Tudo", font=("consolas", 12, "normal"), command=lambda:print("0")).pack(pady=16)
-  tk.Button(aux, **style, text="Ver Senhas", font=("consolas", 12, "normal"), command=lambda:print("0")).pack(pady=16)
+  tk.Button(aux, **style, text="Ver Senhas", font=("consolas", 12, "normal"), command=lambda:showSelect()).pack(pady=16)
 
 """
---- Funções auxiliares ---
+--- Funções de auxiliares ---
 """
 
 def save(tipo, email, telefone, user, senha):
@@ -67,6 +67,40 @@ def showAdd():
 
   salvar = tk.Button(btnFrame, width=8, height=2, text="Salvar", command=lambda:save(tipo.get(), email.get(), telefone.get(), user.get(), senha.get()))
   salvar.pack(side="left", pady=16)
+
+  voltar = tk.Button(btnFrame, width=8, height=2, text="Voltar", command=lambda:showMenu())
+  voltar.pack(side="right", pady=16)
+
+def showSelect():
+  clearAll()
+
+  aux = tk.Frame(main)
+  aux.pack()
+
+  title = tk.Label(aux, text="Adicionar senha", font=("consolas", 16, "bold"))
+  title.pack(fill="x", pady=16)
+
+  selectList = tk.Frame(aux)
+  selectList.pack(fill="both", expand=True, pady=16)
+  tk.Label(selectList, text="Id", font=("consolas", 12, "bold")).grid(row=0, column=0, sticky="ew", padx=16)
+  tk.Label(selectList, text="Tipo", font=("consolas", 12, "bold")).grid(row=0, column=1, sticky="ew", padx=16)
+  tk.Label(selectList, text="Email", font=("consolas", 12, "bold")).grid(row=0, column=2, sticky="ew", padx=16)
+  tk.Label(selectList, text="Telefone", font=("consolas", 12, "bold")).grid(row=0, column=3, sticky="ew", padx=16)
+  tk.Label(selectList, text="Usuário", font=("consolas", 12, "bold")).grid(row=0, column=4, sticky="ew", padx=16)
+  tk.Label(selectList, text="Senha", font=("consolas", 12, "bold")).grid(row=0, column=5, sticky="ew", padx=16)
+  cont = 1
+
+  for row in f.loadPasswords():
+    tk.Label(selectList, text=row[0], font=("consolas", 12, "normal")).grid(row=cont, column=0, sticky="ew")
+    tk.Label(selectList, text=row[1], font=("consolas", 12, "normal")).grid(row=cont, column=1, sticky="ew")
+    tk.Label(selectList, text=row[2], font=("consolas", 12, "normal")).grid(row=cont, column=2, sticky="ew")
+    tk.Label(selectList, text=row[3], font=("consolas", 12, "normal")).grid(row=cont, column=3, sticky="ew")
+    tk.Label(selectList, text=row[4], font=("consolas", 12, "normal")).grid(row=cont, column=4, sticky="ew")
+    tk.Label(selectList, text=row[5], font=("consolas", 12, "normal")).grid(row=cont, column=5, sticky="ew")
+    cont += 1
+
+  btnFrame = tk.Frame(aux)
+  btnFrame.pack(fill="x", pady=16)
 
   voltar = tk.Button(btnFrame, width=8, height=2, text="Voltar", command=lambda:showMenu())
   voltar.pack(side="right", pady=16)

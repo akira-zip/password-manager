@@ -17,3 +17,13 @@ def addPassword(tipo: str, email: str, telefone: str, user: str, password: str):
   con.commit()
   cur.close()
   con.close()
+
+def loadPasswords():
+  con = connect()
+  cur = con.cursor()
+  cur.execute("SELECT * FROM senhas")
+  rows = cur.fetchall()
+  cur.close()
+  con.close()
+
+  return rows
