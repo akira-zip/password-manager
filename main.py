@@ -1,5 +1,6 @@
 import tkinter as tk
 import functions as f
+import variables as v
 
 """
 --- Funções principais ---
@@ -17,9 +18,9 @@ def showMenu():
   
   style = {"width": 16, "height": 2}
   tk.Button(aux, **style, text="Adicionar", font=("consolas", 12, "normal"), command=lambda:showAdd()).pack(pady=16)
-  tk.Button(aux, **style, text="Remover", font=("consolas", 12, "normal"), command=lambda:print("0")).pack(pady=16)
-  tk.Button(aux, **style, text="Apagar Tudo", font=("consolas", 12, "normal"), command=lambda:print("0")).pack(pady=16)
   tk.Button(aux, **style, text="Ver Senhas", font=("consolas", 12, "normal"), command=lambda:showSelect()).pack(pady=16)
+  tk.Button(aux, **style, text="Remover", font=("consolas", 12, "normal"), command=lambda:showRemove()).pack(pady=16)
+  tk.Button(aux, **style, text="Apagar Tudo", font=("consolas", 12, "normal"), command=lambda:f.removeAllPasswords()).pack(pady=16)
 
 """
 --- Funções de auxiliares ---
@@ -27,6 +28,20 @@ def showMenu():
 
 def save(tipo, email, telefone, user, senha):
   f.addPassword(tipo, email, telefone, user, senha)
+  showMenu()
+
+def changeState(id, var):
+  if var.get() == True:
+    v.cbIds.append(id)
+    print(f"Checkbox {id} marcado")
+  else:
+    v.cbIds.remove(id)
+    print(f"Checkbox {id} desmarcado")
+
+def iterateIds():
+  for id in v.cbIds:
+    f.removePassword(id)
+  
   showMenu()
 
 """
@@ -71,6 +86,40 @@ def showAdd():
   voltar = tk.Button(btnFrame, width=8, height=2, text="Voltar", command=lambda:showMenu())
   voltar.pack(side="right", pady=16)
 
+def showRemove():
+  clearAll()
+
+  aux = tk.Frame(main)
+  aux.pack(fill="both")
+
+  title = tk.Label(aux, text="Remover senhas", font=("consolas", 16, "bold"))
+  title.pack(side="top", pady=16)
+
+  fList = tk.Frame(aux)
+  fList.pack(fill="both", expand=True, pady=16)
+  fButton = tk.Frame(aux)
+  fButton.pack(pady=16)
+  
+  rowNum = 1
+  
+  for row in f.loadPasswords():
+    idRegistro = row[0]
+    varState = tk.BooleanVar()
+    v.cbValues[idRegistro] = varState
+    
+    tk.Checkbutton(fList, variable=varState, command=lambda id=idRegistro, var=varState: changeState(id, var)).grid(row=rowNum, column=0, sticky="w", padx=16, pady=4)
+    
+    tk.Label(fList, text=f"{row[1]} | {row[2]} | {row[3]} | {row[4]} | {row[5]}", font=("consolas", 12, "normal")).grid(row=rowNum, column=1, sticky="e", padx=16, pady=4)
+    
+    rowNum += 1
+  
+  del rowNum
+  
+  deletar = tk.Button(fButton, width=8, height=2, text="Remover", command=lambda:iterateIds())
+  deletar.pack(side="left", padx=16)
+  voltar = tk.Button(fButton, width=8, height=2, text="Voltar", command=lambda:showMenu())
+  voltar.pack(side="right", padx=16)
+
 def showSelect():
   clearAll()
 
@@ -82,6 +131,7 @@ def showSelect():
 
   selectList = tk.Frame(aux)
   selectList.pack(fill="both", expand=True, pady=16)
+
   tk.Label(selectList, text="Id", font=("consolas", 12, "bold")).grid(row=0, column=0, sticky="ew", padx=16)
   tk.Label(selectList, text="Tipo", font=("consolas", 12, "bold")).grid(row=0, column=1, sticky="ew", padx=16)
   tk.Label(selectList, text="Email", font=("consolas", 12, "bold")).grid(row=0, column=2, sticky="ew", padx=16)

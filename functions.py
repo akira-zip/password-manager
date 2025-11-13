@@ -18,6 +18,21 @@ def addPassword(tipo: str, email: str, telefone: str, user: str, password: str):
   cur.close()
   con.close()
 
+def removePassword(id: int):
+  con = connect()
+  cur = con.cursor()
+  cur.execute("DELETE FROM senhas WHERE id = %s", (id,))
+  con.commit()
+  cur.close()
+  con.close()
+
+def removeAllPasswords():
+  con = connect()
+  cur = con.cursor()
+  cur.execute("DELETE FROM senhas")
+  con.commit()
+  con.close()
+
 def loadPasswords():
   con = connect()
   cur = con.cursor()
